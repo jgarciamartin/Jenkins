@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clonar el repositorio del código fuente
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Construir la imagen Docker usando Dockerfile en el directorio de la aplicación
+                script {
+                    dockerImage = docker.build("mi_app:${env.BUILD_ID}", "-f Dockerfile .")
+                }
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                // Detener y eliminar cualquier contenedor previamente lanzado con el mismo nombre
+                sh "docker stop mi_app || true"
+                sh "docker rm mi_app || true"
+
+                // Ejecutar el contenedor usando la imagen construida y mapea el puerto 8080 del contenedor al host
+                sh "docker run -d -p 8081:8080 --name mi_app mi_app:${env.BUILD_ID}"
+            }
+        }
+    }
+}
