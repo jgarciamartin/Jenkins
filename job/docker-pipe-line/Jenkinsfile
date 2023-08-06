@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Construir la imagen Docker usando Dockerfile en el directorio de la aplicación
                 script {
-                    dockerImage = docker.build("mi_app:${env.BUILD_ID}", "-f Dockerfile .")
+                    dockerImage = docker.build("job/docker-pipe-line", "-f Dockerfile .")
                 }
             }
         }
