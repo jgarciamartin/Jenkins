@@ -14,7 +14,7 @@ pipeline {
                 // Construir la imagen Docker usando Dockerfile en el directorio de la aplicación
                 script {
                     echo "Valor de la variable env.BUILD_ID: ${env.BUILD_ID}"
-                    dockerImage = docker.build("mi_app:${env.BUILD_ID}", "-f Dockerfile .")
+                    dockerImage = docker.build("mi_app:${env.BUILD_ID}", "-f job/docker-pipe-line/Dockerfile")
                 }
             }
         }
